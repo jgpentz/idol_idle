@@ -13,9 +13,12 @@ var game = new Phaser.Game(config);
 
 // Character variables
 var robo_weeb;
+var weeb;
 
 function preload()
 {
+    // Variable declarations
+
     // Load in background and characters
     this.load.image('background', '../assets/background.png');
     this.load.image('maid', '../assets/cute_maid/happy.png');
@@ -53,8 +56,21 @@ function preload()
 
 function create()
 {
+    // Variable declarations
+    var glow_button;
+    var blue_weeb_button;
+    var green_weeb_button;
+    var grey_weeb_button;
+    var red_weeb_button;
+    var mag_button;
+    var turbo_weeb_button;
+    var akb_button;
+    var container;
+
     this.add.image(600, 400, 'background');
-    this.add.image(700, 675, 'maid');
+    this.add.image(1000, 675, 'maid');
+
+    // Create left container for clickable buttons
 
     this.anims.create({
         key: 'run',
@@ -102,12 +118,21 @@ function create()
         repeat: -1
     });
 
-
-    this.add.sprite(100, 100, 'fan_blue');
+    weeb = this.add.sprite(100, 100, 'fan_blue');
     robo_weeb = this.add.sprite(400, 300, 'mark0').play('run');
 }
 
+var test = 0;
+
 function update()
 {
+    weeb.anims.play('fan_blue_stance', true);
+    // weeb.anims.play('fan_blue_knee', true);
+    // weeb.anims.play('fan_blue_slide', true);
+    // weeb.anims.play('fan_blue_run', true);
+}
 
+function create_weeb() {
+    weeb = this.add.sprite(100, 100, 'fan_blue');
+    return;
 }
