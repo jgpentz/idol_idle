@@ -1,7 +1,7 @@
 var config = {
     type: Phaser.AUTO,
     width: 1200,
-    height:800,
+    height:900,
     scene: {
         preload: preload,
         create: create,
@@ -21,6 +21,11 @@ function preload()
 
     // Load in background and characters
     this.load.image('background', '../assets/background.png');
+    this.load.image('glow_stick_button_img', '../assets/template_button_pic.png');
+    this.load.image('weeb_button_img', '../assets/template_button_pic.png');
+    this.load.image('turbo_weeb_button_img', '../assets/template_button_pic.png');
+    this.load.image('mag_button_img', '../assets/template_button_pic.png');
+    this.load.image('akb_button_img', '../assets/template_button_pic.png');
     this.load.image('maid', '../assets/cute_maid/happy.png');
     this.load.spritesheet('fan_blue',
         '../assets/assets/player/player-spritemap-v9.png',
@@ -67,10 +72,31 @@ function create()
     var akb_button;
     var container;
 
-    this.add.image(600, 400, 'background');
-    this.add.image(1000, 675, 'maid');
+    this.add.image(600, 450, 'background');
+    this.add.image(1000, 750, 'maid');
 
     // Create left container for clickable buttons
+    var glow_stick_button = this.add.image(0, 0, 'glow_stick_button_img');
+    var weeb_button = this.add.image(160, 0, 'weeb_button_img');
+    var turbo_weeb_button = this.add.image(320, 0, 'turbo_weeb_button_img');
+    var mag_button = this.add.image(480, 0, 'mag_button_img');
+    var ask_button = this.add.image(640, 0, 'akb_button_img');
+
+    var button_container = this.add.container(100, 815, [ glow_stick_button, weeb_button, turbo_weeb_button, mag_button, ask_button]);
+
+    glow_stick_button.setInteractive();
+    weeb_button.setInteractive();
+    turbo_weeb_button.setInteractive();
+    mag_button.setInteractive();
+    ask_button.setInteractive();
+
+    glow_stick_button.on('pointerover', function() {
+        this.setTint(0xb3001e);
+    });
+
+    glow_stick_button.on('pointerout', function() {
+        this.clearTint();
+    });
 
     this.anims.create({
         key: 'run',
