@@ -16,14 +16,14 @@ var game = new Phaser.Game(config);
 
 var robo_weeb;
 var weeb;
+var kisses = 0;
+var timedEvent;
 
 // -----------------------------------------
 // Functions
 // -----------------------------------------
 function preload()
 {
-    // Variable declarations
-
     // Load in background
     this.load.image('background', '../assets/background.png');
 
@@ -36,6 +36,11 @@ function preload()
     this.load.image('maid', '../assets/cute_maid/happy.png');
 
     // Load sprites
+    this.load.spritesheet('kiss_spritesheet',
+        '../assets/lips_spritesheet.png',
+        { frameWidth: 75, frameHeight: 150 }
+    );
+
     this.load.spritesheet('fan_blue',
         '../assets/assets/player/player-spritemap-v9.png',
         { frameWidth: 46, frameHeight: 50 }
@@ -106,6 +111,7 @@ function create()
 
     maid.on('pointerup', function() {
         this.setTint(0xb3001e);
+        maidClickAction();
     });
 
     // Glow stick button actions
@@ -248,6 +254,10 @@ function create()
     weeb = this.add.sprite(100, 100, 'fan_blue');
     robo_weeb = this.add.sprite(400, 300, 'mark0').play('run');
 
+    maidClickAction = () => {
+        maidClick(this);
+    }
+
     spawn = (spriteName) => {
         createSprite(this, spriteName);
     }
@@ -258,8 +268,24 @@ function update()
     weeb.anims.play('fan_blue_stance', true);
 }
 
-function maidClick(create) {
+function maidClick(supes) {
+    // Storing this is an array for some reason fixes the destroy bug...
+    var ii = 0;
+    var kiss = [];
 
+    kisses += 1;
+
+    supes.anims.create({
+        key: 'lick_anim',
+        frames: supes.anims.generateFrameNumbers('kiss_spritesheet', { start: 0, end: 13 }),
+        frameRate: 17,
+        repeat: 0
+    });
+
+    kiss[ii] = supes.add.sprite(900, 425, 'kiss_spritesheet').play('lick_anim', false);
+    kiss[ii].once('animationcomplete', () => {
+        kiss[ii].destroy();
+    });
 }
 
 function createSprite(create, spriteName) {
@@ -269,7 +295,7 @@ function createSprite(create, spriteName) {
     }
     else if(spriteName == 'weeb')
     {
-        newSprite = create.add.sprite(500, 500, 'fan_blue');
+        create.add.sprite(500, 500, 'fan_blue');
     }
     else if(spriteName == 'turbo_weeb')
     {
