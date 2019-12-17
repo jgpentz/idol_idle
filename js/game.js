@@ -61,41 +61,126 @@ function preload()
 
 function create()
 {
-    // Variable declarations
-    var glow_button;
-    var blue_weeb_button;
-    var green_weeb_button;
-    var grey_weeb_button;
-    var red_weeb_button;
-    var mag_button;
-    var turbo_weeb_button;
-    var akb_button;
-    var container;
-
     this.add.image(600, 450, 'background');
-    this.add.image(1000, 750, 'maid');
+    var maid = this.add.image(1000, 750, 'maid');
 
     // Create left container for clickable buttons
     var glow_stick_button = this.add.image(0, 0, 'glow_stick_button_img');
     var weeb_button = this.add.image(160, 0, 'weeb_button_img');
     var turbo_weeb_button = this.add.image(320, 0, 'turbo_weeb_button_img');
     var mag_button = this.add.image(480, 0, 'mag_button_img');
-    var ask_button = this.add.image(640, 0, 'akb_button_img');
+    var akb_button = this.add.image(640, 0, 'akb_button_img');
 
-    var button_container = this.add.container(100, 815, [ glow_stick_button, weeb_button, turbo_weeb_button, mag_button, ask_button]);
+    var button_container = this.add.container(100, 815, [ glow_stick_button, weeb_button, turbo_weeb_button, mag_button, akb_button]);
+
+    maid.setInteractive();
 
     glow_stick_button.setInteractive();
     weeb_button.setInteractive();
     turbo_weeb_button.setInteractive();
     mag_button.setInteractive();
-    ask_button.setInteractive();
+    akb_button.setInteractive();
 
+    // Maid actions
+    maid.on('pointerover', function() {
+        this.setTint(0xb3001e);
+    });
+
+    maid.on('pointerout', function() {
+        this.clearTint();
+    });
+
+    maid.on('pointerdown', function() {
+        this.setTint(0xff8095);
+    });
+
+    maid.on('pointerup', function() {
+        this.setTint(0xb3001e);
+    });
+
+    // Glow stick button actions
     glow_stick_button.on('pointerover', function() {
         this.setTint(0xb3001e);
     });
 
     glow_stick_button.on('pointerout', function() {
         this.clearTint();
+    });
+
+    glow_stick_button.on('pointerdown', function() {
+        this.setTint(0xff8095);
+    });
+
+    glow_stick_button.on('pointerup', function() {
+        this.setTint(0xb3001e);
+    });
+
+    // Weeb button actions
+    weeb_button.on('pointerover', function() {
+        this.setTint(0xb3001e);
+    });
+
+    weeb_button.on('pointerout', function() {
+        this.clearTint();
+    });
+
+    weeb_button.on('pointerdown', function() {
+        this.setTint(0xff8095);
+    });
+
+    weeb_button.on('pointerup', function() {
+        this.setTint(0xb3001e);
+    });
+
+    // Turbo weeb button actions
+    turbo_weeb_button.on('pointerover', function() {
+        this.setTint(0xb3001e);
+    });
+
+    turbo_weeb_button.on('pointerout', function() {
+        this.clearTint();
+    });
+
+    turbo_weeb_button.on('pointerdown', function() {
+        this.setTint(0xff8095);
+    });
+
+    turbo_weeb_button.on('pointerup', function() {
+        this.setTint(0xb3001e);
+    });
+
+    // Meet and greet button actions
+    mag_button.on('pointerover', function() {
+        this.setTint(0xb3001e);
+    });
+
+    mag_button.on('pointerout', function() {
+        this.clearTint();
+    });
+
+    mag_button.on('pointerdown', function() {
+        this.setTint(0xff8095);
+    });
+
+    mag_button.on('pointerup', function() {
+        this.setTint(0xb3001e);
+    });
+
+    // Akb48 button actions
+    akb_button.on('pointerover', function() {
+        this.setTint(0xb3001e);
+    });
+
+    akb_button.on('pointerout', function() {
+        this.clearTint();
+    });
+
+    akb_button.on('pointerdown', function() {
+        this.setTint(0xff8095);
+    });
+
+    akb_button.on('pointerup', function() {
+        this.setTint(0xb3001e);
     });
 
     this.anims.create({
@@ -147,8 +232,6 @@ function create()
     weeb = this.add.sprite(100, 100, 'fan_blue');
     robo_weeb = this.add.sprite(400, 300, 'mark0').play('run');
 }
-
-var test = 0;
 
 function update()
 {
