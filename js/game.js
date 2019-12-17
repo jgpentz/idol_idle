@@ -1,3 +1,6 @@
+// -----------------------------------------
+// Global Variables
+// -----------------------------------------
 var config = {
     type: Phaser.AUTO,
     width: 1200,
@@ -11,10 +14,12 @@ var config = {
 
 var game = new Phaser.Game(config);
 
-// Character variables
 var robo_weeb;
 var weeb;
 
+// -----------------------------------------
+// Functions
+// -----------------------------------------
 function preload()
 {
     // Variable declarations
@@ -113,6 +118,7 @@ function create()
 
     glow_stick_button.on('pointerup', function() {
         this.setTint(0xb3001e);
+        spawn('fan_blue');
     });
 
     // Weeb button actions
@@ -231,6 +237,10 @@ function create()
 
     weeb = this.add.sprite(100, 100, 'fan_blue');
     robo_weeb = this.add.sprite(400, 300, 'mark0').play('run');
+
+    spawn = (spriteName) => {
+        createSprite(this, spriteName);
+    }
 }
 
 function update()
@@ -241,7 +251,6 @@ function update()
     // weeb.anims.play('fan_blue_run', true);
 }
 
-function create_weeb() {
-    weeb = this.add.sprite(100, 100, 'fan_blue');
-    return;
+function createSprite(create, spriteName) {
+    newSprite = create.add.sprite(500, 500, spriteName);
 }
