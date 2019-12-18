@@ -282,7 +282,8 @@ function maidClick(supes) {
         repeat: 0
     });
 
-    kiss[ii] = supes.add.sprite(900, 425, 'kiss_spritesheet').play('lick_anim', false);
+    var rand_xpos = Math.floor(Math.random() * 100);
+    kiss[ii] = supes.add.sprite(900 + rand_xpos, 425, 'kiss_spritesheet').play('lick_anim', false);
     kiss[ii].once('animationcomplete', () => {
         kiss[ii].destroy();
     });
