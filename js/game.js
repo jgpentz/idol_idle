@@ -21,37 +21,74 @@ var kisses = 0;
 var timedEvent;
 
 // Variables for sprite positioning
-var glow_stick_green_posx = 25;
+var glow_stick_green_posx = 35;
 var glow_stick_green_posy = 700;
-var glow_stick_grey_posx = 25;
+var glow_stick_grey_posx = 35;
 var glow_stick_grey_posy = 600;
-var glow_stick_red_posx = 250;
+var glow_stick_red_posx = 450;
 var glow_stick_red_posy = 700
-var glow_stick_blue_posx = 250;
+var glow_stick_blue_posx = 450;
 var glow_stick_blue_posy = 600;
 
-var fan_green_posx = 25;
+var fan_green_posx = 35;
 var fan_green_posy = 500;
-var fan_grey_posx = 25;
+var fan_grey_posx = 35;
 var fan_grey_posy = 400;
-var fan_red_posx = 250;
+var fan_red_posx = 450;
 var fan_red_posy = 500;
-var fan_blue_posx = 250;
+var fan_blue_posx = 450;
 var fan_blue_posy = 400;
 
-var turboweeb_posx = 25;
+var turboweeb_posx = 35;
 var turboweeb_posy = 300;
 
-var mag_posx = 25;
+var mag_posx = 35;
 var mag_poxy = 200;
 
-var akb_poxx = 25;
+var akb_poxx = 35;
 var akb_posy = 100;
 
 var chad_posx;
 var chad_posy;
 var super_chad_posx;
 var super_chad_posy;
+
+var glow_cnt = 0;
+var fan_cnt = 0;
+
+// LUTS for colored sprites
+var glow_stick_lut = [
+    'green_glow_stick_img',
+    'grey_glow_stick_img',
+    'red_glow_stick_img',
+    'blue_glow_stick_img',
+];
+var glow_stick_pos_lut = [
+    glow_stick_green_posx,
+    glow_stick_green_posy,
+    glow_stick_grey_posx,
+    glow_stick_grey_posy,
+    glow_stick_red_posx,
+    glow_stick_red_posy,
+    glow_stick_blue_posx,
+    glow_stick_blue_posy,
+];
+var fan_lut = [
+    'fan_green',
+    'fan_grey',
+    'fan_red',
+    'fan_blue',
+]
+var fan_pos_lut = [
+    fan_green_posx,
+    fan_green_posy,
+    fan_grey_posx,
+    fan_grey_posy,
+    fan_red_posx,
+    fan_red_posy,
+    fan_blue_posx,
+    fan_blue_posy,
+]
 
 // -----------------------------------------
 // Functions
@@ -342,50 +379,36 @@ function kissCountUpdate(ball, brick) {
     kissesText.setText('Kisses: ' + kisses);
 }
 
-
-var glow_stick_lut = [
-    'green_glow_stick_img',
-    'grey_glow_stick_img',
-    'red_glow_stick_img',
-    'blue_glow_stick_img',
-];
-var glow_stick_pos_lut = [
-    glow_stick_green_posx,
-    glow_stick_green_posy,
-    glow_stick_grey_posx,
-    glow_stick_grey_posy,
-    glow_stick_red_posx,
-    glow_stick_red_posy,
-    glow_stick_blue_posx,
-    glow_stick_blue_posy,
-];
-var fan_lut = [
-    'fan_green',
-    'fan_grey',
-    'fan_red',
-    'fan_blue',
-]
-var fan_pos_lut = [
-    fan_green_posx,
-    fan_green_posy,
-    fan_grey_posx,
-    fan_grey_posy,
-    fan_red_posx,
-    fan_red_posy,
-    fan_blue_posx,
-    fan_blue_posy,
-]
+var glow_xpos_range = [10, 10, 15, 10];
+var glow_ypos_range = [-5, -10, 10, -15, 15, 5];
+var glow_pos_cnt = 0;
 
 function createSprite(supes, spriteName) {
-    var glow_cnt = 0;
+
+    /*
+    *  Alloted space for glow sticks
+    *  | 35 ---------- 450 --------- 850 |
+    */
     if(spriteName == 'glow_stick')
     {
+        if(glow_stick_pos_lut[6] < 870)
+        {
+            supes.add.sprite(glow_stick_pos_lut[glow_cnt * 2], glow_stick_pos_lut[(glow_cnt * 2) + 1], glow_stick_lut[glow_cnt]);
 
-        supes.add.sprite(400, 500, 'fan_blue');
+            // Increment glow stick x-y positions, checking for boundaries
+            glow_stick_pos_lut[glow_cnt * 2] += glow_xpos_range[glow_pos_cnt % 4];
+            glow_stick_pos_lut[(glow_cnt * 2) + 1] += glow_ypos_range[glow_pos_cnt % 6];
+
+            if((glow_cnt % 4) == 0)
+            {
+                glow_pos_cnt++;
+            }
+            glow_cnt = (glow_cnt + 1) % 4;
+        }
     }
     else if(spriteName == 'weeb')
     {
-        supes.add.sprite(500, 500, 'fan_blue');
+        supes.add.sprite(400, 500, 'fan_blue');
     }
     else if(spriteName == 'turbo_weeb')
     {
