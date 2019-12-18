@@ -21,21 +21,21 @@ var kisses = 0;
 var timedEvent;
 
 // Variables for sprite positioning
-var glow_stick_yellow_posx = 25;
-var glow_stick_yellow_posy = 700;
 var glow_stick_green_posx = 25;
-var glow_stick_green_posy = 600;
-var glow_stick_white_posx = 250;
-var glow_stick_white_posy = 700
+var glow_stick_green_posy = 700;
+var glow_stick_grey_posx = 25;
+var glow_stick_grey_posy = 600;
+var glow_stick_red_posx = 250;
+var glow_stick_red_posy = 700
 var glow_stick_blue_posx = 250;
 var glow_stick_blue_posy = 600;
 
-var fan_yellow_posx = 25;
-var fan_yellow_posy = 500;
 var fan_green_posx = 25;
-var fan_green_posy = 400;
-var fan_white_posx = 250;
-var fan_white_posy = 500;
+var fan_green_posy = 500;
+var fan_grey_posx = 25;
+var fan_grey_posy = 400;
+var fan_red_posx = 250;
+var fan_red_posy = 500;
 var fan_blue_posx = 250;
 var fan_blue_posy = 400;
 
@@ -71,6 +71,13 @@ function preload()
     this.load.image('mag_button_img', '../assets/template_button_pic.png');
     this.load.image('akb_button_img', '../assets/template_button_pic.png');
     this.load.image('maid', '../assets/cute_maid/happy.png');
+
+    // Load glowsticks
+    this.load.image('green_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark4.png');
+    this.load.image('grey_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark1.png');
+    this.load.image('red_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark5.png');
+    this.load.image('blue_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark6.png');
+
 
     // Load sprites
     this.load.spritesheet('kiss_spritesheet',
@@ -335,10 +342,46 @@ function kissCountUpdate(ball, brick) {
     kissesText.setText('Kisses: ' + kisses);
 }
 
+
+var glow_stick_lut = [
+    'green_glow_stick_img',
+    'grey_glow_stick_img',
+    'red_glow_stick_img',
+    'blue_glow_stick_img',
+];
+var glow_stick_pos_lut = [
+    glow_stick_green_posx,
+    glow_stick_green_posy,
+    glow_stick_grey_posx,
+    glow_stick_grey_posy,
+    glow_stick_red_posx,
+    glow_stick_red_posy,
+    glow_stick_blue_posx,
+    glow_stick_blue_posy,
+];
+var fan_lut = [
+    'fan_green',
+    'fan_grey',
+    'fan_red',
+    'fan_blue',
+]
+var fan_pos_lut = [
+    fan_green_posx,
+    fan_green_posy,
+    fan_grey_posx,
+    fan_grey_posy,
+    fan_red_posx,
+    fan_red_posy,
+    fan_blue_posx,
+    fan_blue_posy,
+]
+
 function createSprite(supes, spriteName) {
+    var glow_cnt = 0;
     if(spriteName == 'glow_stick')
     {
-        supes.add.sprite(500, 500, 'fan_blue');
+
+        supes.add.sprite(400, 500, 'fan_blue');
     }
     else if(spriteName == 'weeb')
     {
