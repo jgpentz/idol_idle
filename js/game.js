@@ -20,6 +20,39 @@ var kissesText;
 var kisses = 0;
 var timedEvent;
 
+// Variables for sprite positioning
+var glow_stick_yellow_posx = 25;
+var glow_stick_yellow_posy = 700;
+var glow_stick_green_posx = 25;
+var glow_stick_green_posy = 600;
+var glow_stick_white_posx = 250;
+var glow_stick_white_posy = 700
+var glow_stick_blue_posx = 250;
+var glow_stick_blue_posy = 600;
+
+var fan_yellow_posx = 25;
+var fan_yellow_posy = 500;
+var fan_green_posx = 25;
+var fan_green_posy = 400;
+var fan_white_posx = 250;
+var fan_white_posy = 500;
+var fan_blue_posx = 250;
+var fan_blue_posy = 400;
+
+var turboweeb_posx = 25;
+var turboweeb_posy = 300;
+
+var mag_posx = 25;
+var mag_poxy = 200;
+
+var akb_poxx = 25;
+var akb_posy = 100;
+
+var chad_posx;
+var chad_posy;
+var super_chad_posx;
+var super_chad_posy;
+
 // -----------------------------------------
 // Functions
 // -----------------------------------------
@@ -302,14 +335,14 @@ function kissCountUpdate(ball, brick) {
     kissesText.setText('Kisses: ' + kisses);
 }
 
-function createSprite(create, spriteName) {
+function createSprite(supes, spriteName) {
     if(spriteName == 'glow_stick')
     {
-
+        supes.add.sprite(500, 500, 'fan_blue');
     }
     else if(spriteName == 'weeb')
     {
-        create.add.sprite(500, 500, 'fan_blue');
+        supes.add.sprite(500, 500, 'fan_blue');
     }
     else if(spriteName == 'turbo_weeb')
     {
