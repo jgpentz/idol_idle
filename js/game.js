@@ -3,8 +3,8 @@
 // -----------------------------------------
 var config = {
     type: Phaser.AUTO,
-    width: 1200,
-    height:900,
+    width: window.innerWidth * window.devicePixelRatio,
+    height:window.innerHeight * window.devicePixelRatio,
     scene: {
         preload: preload,
         create: create,
@@ -14,6 +14,10 @@ var config = {
 
 var game = new Phaser.Game(config);
 
+var game_width = window.innerWidth;
+var game_height = window.innerHeight;
+
+var maid;
 var robo_weeb;
 var weeb;
 var kissesText;
@@ -22,13 +26,13 @@ var timedEvent;
 
 // Variables for sprite positioning
 var glow_stick_green_posx = 35;
-var glow_stick_green_posy = 700;
+var glow_stick_green_posy = game_height - 250;
 var glow_stick_grey_posx = 35;
-var glow_stick_grey_posy = 600;
-var glow_stick_red_posx = 450;
-var glow_stick_red_posy = 700
-var glow_stick_blue_posx = 450;
-var glow_stick_blue_posy = 600;
+var glow_stick_grey_posy = game_height - 350;
+var glow_stick_red_posx = game_width / 3;
+var glow_stick_red_posy = game_height - 250
+var glow_stick_blue_posx = game_width / 3;
+var glow_stick_blue_posy = game_height - 350;
 
 var fan_green_posx = 35;
 var fan_green_posy = 500;
@@ -95,9 +99,6 @@ var fan_pos_lut = [
 // -----------------------------------------
 function preload()
 {
-    // Load in background
-    this.load.image('background', '../assets/background.png');
-
     // Load in kisses counter
     this.load.image('kisses_cnt_img', '../assets/kisses_cnt.png');
 
@@ -156,17 +157,19 @@ function preload()
 
 function create()
 {
-    this.add.image(600, 450, 'background');
-    var maid = this.add.image(1000, 750, 'maid');
+    // Set background color
+    this.cameras.main.setBackgroundColor(0xF0E1EF);
+
+    maid = this.add.image((game_width - (game_width / 5)), (game_height - 200), 'maid');
 
     // Create buttons and put them in a container
     var glow_stick_button = this.add.image(0, 0, 'glow_stick_button_img');
-    var weeb_button = this.add.image(160, 0, 'weeb_button_img');
-    var turbo_weeb_button = this.add.image(320, 0, 'turbo_weeb_button_img');
-    var mag_button = this.add.image(480, 0, 'mag_button_img');
-    var akb_button = this.add.image(640, 0, 'akb_button_img');
+    var weeb_button = this.add.image((game_width/10), 0, 'weeb_button_img');
+    var turbo_weeb_button = this.add.image(((game_width/10) * 2), 0, 'turbo_weeb_button_img');
+    var mag_button = this.add.image(((game_width/10) * 3), 0, 'mag_button_img');
+    var akb_button = this.add.image(((game_width/10) * 4), 0, 'akb_button_img');
 
-    var button_container = this.add.container(100, 815, [ glow_stick_button, weeb_button, turbo_weeb_button, mag_button, akb_button]);
+    var button_container = this.add.container((game_width/20), game_height - 100, [ glow_stick_button, weeb_button, turbo_weeb_button, mag_button, akb_button]);
 
     // Set interactive buttons
     maid.setInteractive();
@@ -369,7 +372,7 @@ function maidClick(supes) {
     });
 
     var rand_xpos = Math.floor(Math.random() * 100);
-    kiss[ii] = supes.add.sprite(900 + rand_xpos, 425, 'kiss_spritesheet').play('lick_anim', false);
+    kiss[ii] = supes.add.sprite((game_width - (game_width/5) - 90) + rand_xpos, (game_height - 535), 'kiss_spritesheet').play('lick_anim', false);
     kiss[ii].once('animationcomplete', () => {
         kiss[ii].destroy();
     });
@@ -387,11 +390,11 @@ function createSprite(supes, spriteName) {
 
     /*
     *  Alloted space for glow sticks
-    *  | 35 ---------- 450 --------- 850 |
+    *  | 35 ---------- (game_width/3) --------- (game_width - gamewidth/3) |
     */
     if(spriteName == 'glow_stick')
     {
-        if(glow_stick_pos_lut[6] < 870)
+        if(glow_stick_pos_lut[6] < (game_width - (game_width/3)))
         {
             supes.add.sprite(glow_stick_pos_lut[glow_cnt * 2], glow_stick_pos_lut[(glow_cnt * 2) + 1], glow_stick_lut[glow_cnt]);
 
