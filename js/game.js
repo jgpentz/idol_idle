@@ -16,6 +16,7 @@ var game = new Phaser.Game(config);
 
 var robo_weeb;
 var weeb;
+var kissesText;
 var kisses = 0;
 var timedEvent;
 
@@ -26,6 +27,9 @@ function preload()
 {
     // Load in background
     this.load.image('background', '../assets/background.png');
+
+    // Load in kisses counter
+    this.load.image('kisses_cnt_img', '../assets/kisses_cnt.png');
 
     // Load buttons
     this.load.image('glow_stick_button_img', '../assets/template_button_pic.png');
@@ -260,12 +264,17 @@ function create()
 
     spawn = (spriteName) => {
         createSprite(this, spriteName);
-    }
+   }
+
+   // Add kisses counter in top left
+   kissesText = this.add.text(55,15,'Kisses: 0', { font: '24px Arial', fill: '#b3001e' });
+   this.add.image(25, 25, 'kisses_cnt_img');
 }
 
 function update()
 {
     weeb.anims.play('fan_blue_stance', true);
+    kissCountUpdate();
 }
 
 function maidClick(supes) {
@@ -287,6 +296,10 @@ function maidClick(supes) {
     kiss[ii].once('animationcomplete', () => {
         kiss[ii].destroy();
     });
+}
+
+function kissCountUpdate(ball, brick) {
+    kissesText.setText('Kisses: ' + kisses);
 }
 
 function createSprite(create, spriteName) {
