@@ -27,21 +27,21 @@ var timedEvent;
 // Variables for sprite positioning
 var glow_stick_green_posx = 35;
 var glow_stick_green_posy = game_height - 250;
-var glow_stick_grey_posx = 35;
-var glow_stick_grey_posy = game_height - 350;
+var glow_stick_yellow_posx = 35;
+var glow_stick_yellow_posy = game_height - 350;
 var glow_stick_red_posx = game_width / 3;
 var glow_stick_red_posy = game_height - 250
 var glow_stick_blue_posx = game_width / 3;
 var glow_stick_blue_posy = game_height - 350;
 
 var fan_green_posx = 35;
-var fan_green_posy = 500;
-var fan_grey_posx = 35;
-var fan_grey_posy = 400;
-var fan_red_posx = 450;
-var fan_red_posy = 500;
-var fan_blue_posx = 450;
-var fan_blue_posy = 400;
+var fan_green_posy = game_height - 450;
+var fan_yellow_posx = 35;
+var fan_yellow_posy = game_height - 550;
+var fan_red_posx = game_width / 3;
+var fan_red_posy = game_height - 450;
+var fan_blue_posx = game_width / 3;
+var fan_blue_posy = game_height - 550;
 
 var turboweeb_posx = 35;
 var turboweeb_posy = 300;
@@ -60,39 +60,47 @@ var super_chad_posy;
 var glow_cnt = 0;
 var fan_cnt = 0;
 
-// LUTS for colored sprites
+// Glow stick LUTs
 var glow_stick_lut = [
     'green_glow_stick_img',
-    'grey_glow_stick_img',
+    'yellow_glow_stick_img',
     'red_glow_stick_img',
     'blue_glow_stick_img',
 ];
 var glow_stick_pos_lut = [
     glow_stick_green_posx,
     glow_stick_green_posy,
-    glow_stick_grey_posx,
-    glow_stick_grey_posy,
+    glow_stick_yellow_posx,
+    glow_stick_yellow_posy,
     glow_stick_red_posx,
     glow_stick_red_posy,
     glow_stick_blue_posx,
     glow_stick_blue_posy,
 ];
+
+// Fan LUTs
 var fan_lut = [
-    'fan_green',
-    'fan_grey',
-    'fan_red',
-    'fan_blue',
-]
+    'spritesheet_fan_green',
+    'spritesheet_fan_yellow',
+    'spritesheet_fan_red',
+    'spritesheet_fan_blue',
+];
+var fan_anim_lut = [
+    'anim_fan_green',
+    'anim_fan_yellow',
+    'anim_fan_red',
+    'anim_fan_blue',
+];
 var fan_pos_lut = [
     fan_green_posx,
     fan_green_posy,
-    fan_grey_posx,
-    fan_grey_posy,
+    fan_yellow_posx,
+    fan_yellow_posy,
     fan_red_posx,
     fan_red_posy,
     fan_blue_posx,
     fan_blue_posy,
-]
+];
 
 // -----------------------------------------
 // Functions
@@ -112,7 +120,7 @@ function preload()
 
     // Load glowsticks
     this.load.image('green_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark4.png');
-    this.load.image('grey_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark1.png');
+    this.load.image('yellow_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark1.png');
     this.load.image('red_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark5.png');
     this.load.image('blue_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark6.png');
 
@@ -123,22 +131,30 @@ function preload()
         { frameWidth: 75, frameHeight: 150 }
     );
 
-    this.load.spritesheet('fan_blue',
-        '../assets/assets/player/player-spritemap-v9.png',
-        { frameWidth: 46, frameHeight: 50 }
+    // Fan Sprites
+    this.load.spritesheet('spritesheet_fan_green',
+        '../assets/weebs/spritesheet_fan_green.png',
+        { frameWidth: 80, frameHeight: 80 }
     );
-    this.load.spritesheet('fan_green',
-        '../assets/assets/player/player-spritemap-v9-greenpants.png',
-        { frameWidth: 46, frameHeight: 50 }
+
+
+    this.load.spritesheet('spritesheet_fan_yellow',
+        '../assets/weebs/spritesheet_fan_yellow.png',
+        { frameWidth: 80, frameHeight: 80 }
     );
-    this.load.spritesheet('fan_grey',
-        '../assets/assets/player/player-spritemap-v9-greypants.png',
-        { frameWidth: 46, frameHeight: 50 }
+
+
+    this.load.spritesheet('spritesheet_fan_red',
+        '../assets/weebs/spritesheet_fan_red.png',
+        { frameWidth: 80, frameHeight: 80 }
     );
-    this.load.spritesheet('fan_red',
-        '../assets/assets/player/player-spritemap-v9-redpants.png',
-        { frameWidth: 46, frameHeight: 50 }
+
+    this.load.spritesheet('spritesheet_fan_blue',
+        '../assets/weebs/spritesheet_fan_blue.png',
+        { frameWidth: 80, frameHeight: 80 }
     );
+
+
 
     // Load Mark images for the animation
     this.load.image('mark0', '../assets/CyborgMark/Takbo/TakboMark_000.png')
@@ -171,6 +187,7 @@ function create()
 
     var button_container = this.add.container((game_width/20), game_height - 100, [ glow_stick_button, weeb_button, turbo_weeb_button, mag_button, akb_button]);
 
+      // --------------- Buttons --------------
     // Set interactive buttons
     maid.setInteractive();
 
@@ -308,34 +325,41 @@ function create()
         repeat: -1
     });
 
-    // Animations for blue character
+    // --------------- Animations --------------
+    // Animations for green character
     this.anims.create({
-        key: 'fan_blue_stance',
-        frames: this.anims.generateFrameNumbers('fan_blue', { start: 0, end: 7 }),
-        frameRate: 10,
+        key: 'anim_fan_green',
+        frames: this.anims.generateFrameNumbers('spritesheet_fan_green', { start: 0, end: 20 }),
+        frameRate: 5,
         repeat: -1
     });
+
+    // Animations for yellow character
     this.anims.create({
-        key: 'fan_blue_knee',
-        frames: this.anims.generateFrameNumbers('fan_blue', { start: 8, end: 13 }),
-        frameRate: 10,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'fan_blue_slide',
-        frames: this.anims.generateFrameNumbers('fan_blue', { start: 16, end: 21 }),
-        frameRate: 10,
-        repeat: -1
-    });
-    this.anims.create({
-        key: 'fan_blue_run',
-        frames: this.anims.generateFrameNumbers('fan_blue', { start: 24, end: 31 }),
+        key: 'anim_fan_yellow',
+        frames: this.anims.generateFrameNumbers('spritesheet_fan_yellow', { start: 0, end: 20 }),
         frameRate: 10,
         repeat: -1
     });
 
+    // Animations for red character
+    this.anims.create({
+        key: 'anim_fan_red',
+        frames: this.anims.generateFrameNumbers('spritesheet_fan_red', { start: 0, end: 20 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
+    // Animations for blue character
+    this.anims.create({
+        key: 'anim_fan_blue',
+        frames: this.anims.generateFrameNumbers('spritesheet_fan_blue', { start: 0, end: 20 }),
+        frameRate: 5,
+        repeat: -1
+    });
+
     // Sprite spawning
-    weeb = this.add.sprite(100, 100, 'fan_blue');
+    // weeb = this.add.sprite(100, 100, 'spritesheet_fan_blue').play('anim_fan_blue');
     robo_weeb = this.add.sprite(400, 300, 'mark0').play('run');
 
     maidClickAction = () => {
@@ -353,7 +377,7 @@ function create()
 
 function update()
 {
-    weeb.anims.play('fan_blue_stance', true);
+    // weeb.anims.play('anim_blue_bow', true);
     kissCountUpdate();
 }
 
@@ -386,6 +410,12 @@ var glow_xpos_range = [10, 10, 15, 10];
 var glow_ypos_range = [-5, -10, 10, -15, 15, 5];
 var glow_pos_cnt = 0;
 
+var fan_xpos_range = [10, 10, 15, 10];
+var fan_ypos_range = [-5, -10, 10, -15, 15, 5];
+var fan_pos_cnt = 0;
+
+var fan_pos_lut
+
 function createSprite(supes, spriteName) {
 
     /*
@@ -411,7 +441,7 @@ function createSprite(supes, spriteName) {
     }
     else if(spriteName == 'weeb')
     {
-        supes.add.sprite(400, 500, 'fan_blue');
+        weeb = supes.add.sprite(100, 100, 'spritesheet_fan_green').play('anim_fan_blue');
     }
     else if(spriteName == 'turbo_weeb')
     {
