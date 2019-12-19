@@ -24,6 +24,19 @@ var kissesText;
 var kisses = 0;
 var timedEvent;
 
+var timer_glow = [];
+var timer_fan = [];
+var timer_turbo_weeb = [];
+var timer_mag = [];
+var timer_akb = [];
+
+var counter_tot_glow = 0;
+var counter_tot_fan = 0;
+var counter_tot_turbo_weeb = 0;
+var counter_tot_mag = 0;
+var counter_tot_akb = 0;
+
+
 // Variables for sprite positioning
 var glow_stick_green_posx = 35;
 var glow_stick_green_posy = game_height - 225;
@@ -133,11 +146,11 @@ function preload()
     this.load.image('kisses_cnt_img', '../assets/kisses_cnt.png');
 
     // Load buttons
-    this.load.image('glow_stick_button_img', '../assets/template_button_pic.png');
-    this.load.image('weeb_button_img', '../assets/template_button_pic.png');
-    this.load.image('turbo_weeb_button_img', '../assets/template_button_pic.png');
-    this.load.image('mag_button_img', '../assets/template_button_pic.png');
-    this.load.image('akb_button_img', '../assets/template_button_pic.png');
+    this.load.image('glow_stick_button_img', '../assets/glowstick_button.png');
+    this.load.image('weeb_button_img', '../assets/fan_button_pic.png');
+    this.load.image('turbo_weeb_button_img', '../assets/turbo_weeb_button_pic.png');
+    this.load.image('mag_button_img', '../assets/mag_button_pic.png');
+    this.load.image('akb_button_img', '../assets/akb48_button_pic.png');
     this.load.image('maid', '../assets/cute_maid/happy.png');
 
     // Load glowsticks
@@ -196,8 +209,6 @@ function preload()
         '../assets/mag_spritesheet.png',
         { frameWidth: 100, frameHeight: 100 }
     );
-
-    // Load AKB48
 }
 
 
@@ -415,6 +426,27 @@ function update()
     kissCountUpdate();
 }
 
+function updateGlowKisses()
+{
+    kisses += 1;
+}
+function updateFanKisses()
+{
+    kisses += 5;
+}
+function updateTurboWeebKisses()
+{
+    kisses += 100;
+}
+function updateMagKisses()
+{
+    kisses += 10000;
+}
+function updateAkbKisses()
+{
+    kisses += 100000;
+}
+
 function maidClick(supes) {
     // Storing this is an array for some reason fixes the destroy bug...
     var ii = 0;
@@ -451,66 +483,98 @@ var fan_pos_cnt = 0;
 function createSprite(supes, spriteName) {
     if(spriteName == 'glow_stick')
     {
-        if(kisses > 10)
-        if(glow_stick_pos_lut[6] < (game_width - (game_width/3)))
+        if(kisses >= 25)
         {
-            supes.add.sprite(glow_stick_pos_lut[glow_cnt * 2], glow_stick_pos_lut[(glow_cnt * 2) + 1], glow_stick_lut[glow_cnt]);
-
-            // Increment glow stick x-y positions, checking for boundaries
-            glow_stick_pos_lut[glow_cnt * 2] += glow_xpos_range[glow_pos_cnt % 4];
-            glow_stick_pos_lut[(glow_cnt * 2) + 1] += glow_ypos_range[glow_pos_cnt % 6];
-
-            if((glow_cnt % 4) == 0)
+            if(glow_stick_pos_lut[6] < (game_width - (game_width/3)))
             {
-                glow_pos_cnt++;
+                supes.add.sprite(glow_stick_pos_lut[glow_cnt * 2], glow_stick_pos_lut[(glow_cnt * 2) + 1], glow_stick_lut[glow_cnt]);
+
+                // Increment glow stick x-y positions, checking for boundaries
+                glow_stick_pos_lut[glow_cnt * 2] += glow_xpos_range[glow_pos_cnt % 4];
+                glow_stick_pos_lut[(glow_cnt * 2) + 1] += glow_ypos_range[glow_pos_cnt % 6];
+
+                if((glow_cnt % 4) == 0)
+                {
+                    glow_pos_cnt++;
+                }
+                glow_cnt = (glow_cnt + 1) % 4;
             }
-            glow_cnt = (glow_cnt + 1) % 4;
+
+            timer_glow[counter_tot_glow] = supes.time.addEvent({ delay: 500, callback: updateGlowKisses, callbackScope: supes, loop: true });
+            kisses -= 25;
         }
+
     }
     else if(spriteName == 'weeb')
     {
-        if(fan_pos_lut[6] < (game_width - (game_width/3)))
+        if(kisses >= 500)
         {
-            supes.add.sprite(fan_pos_lut[fan_cnt * 2], fan_pos_lut[(fan_cnt * 2) + 1], fan_lut[fan_cnt]).play(fan_anim_lut[fan_cnt]);
-
-            // Increment glow stick x-y positions, checking for boundaries
-            fan_pos_lut[fan_cnt * 2] += fan_xpos_range[fan_pos_cnt % 4];
-            fan_pos_lut[(fan_cnt * 2) + 1] += fan_ypos_range[fan_pos_cnt % 6];
-
-            if((fan_cnt % 4) == 0)
+            if(fan_pos_lut[6] < (game_width - (game_width/3)))
             {
-                fan_pos_cnt++;
+                supes.add.sprite(fan_pos_lut[fan_cnt * 2], fan_pos_lut[(fan_cnt * 2) + 1], fan_lut[fan_cnt]).play(fan_anim_lut[fan_cnt]);
+
+                // Increment fan x-y positions, checking for boundaries
+                fan_pos_lut[fan_cnt * 2] += fan_xpos_range[fan_pos_cnt % 4];
+                fan_pos_lut[(fan_cnt * 2) + 1] += fan_ypos_range[fan_pos_cnt % 6];
+
+                if((fan_cnt % 4) == 0)
+                {
+                    fan_pos_cnt++;
+                }
+                fan_cnt = (fan_cnt + 1) % 4;
             }
-            fan_cnt = (fan_cnt + 1) % 4;
+
+            timer_fan[counter_tot_fan] = supes.time.addEvent({ delay: 1000, callback: updateFanKisses, callbackScope: supes, loop: true });
+            counter_tot_fan += 1;
+            kisses -= 500;
         }
     }
     else if(spriteName == 'turbo_weeb')
     {
-        if(turbo_weeb_pos_lut[0] < (game_width - (game_width/3)))
+        if(kisses >= 10000)
         {
-            supes.add.sprite(turbo_weeb_pos_lut[0], turbo_weeb_pos_lut[1], 'mark0').play('anim_turbo_weeb');
+            if(turbo_weeb_pos_lut[0] < (game_width - (game_width/3)))
+            {
+                supes.add.sprite(turbo_weeb_pos_lut[0], turbo_weeb_pos_lut[1], 'mark0').play('anim_turbo_weeb');
 
-            turbo_weeb_pos_lut[0] += 50;
+                turbo_weeb_pos_lut[0] += 50;
+            }
+
+            timer_fan[counter_tot_fan] = supes.time.addEvent({ delay: 2000, callback: updateTurboWeebKisses, callbackScope: supes, loop: true });
+            counter_tot_fan += 1;
+            kisses -= 10000;
         }
     }
     else if(spriteName == 'mag')
     {
-        if(mag_pos_lut[0] < (game_width - (game_width/3)))
+        if(kisses >= 100000)
         {
-            supes.add.sprite(mag_pos_lut[0], mag_pos_lut[1], 'spritesheet_mag').play('anim_mag');
+            if(mag_pos_lut[0] < (game_width - (game_width/3)))
+            {
+                supes.add.sprite(mag_pos_lut[0], mag_pos_lut[1], 'spritesheet_mag').play('anim_mag');
 
-            mag_pos_lut[0] += 105;
+                mag_pos_lut[0] += 105;
+            }
+
+            timer_mag[counter_tot_mag] = supes.time.addEvent({ delay: 5000, callback: updateMagKisses, callbackScope: supes, loop: true });
+            counter_tot_mag += 1;
+            kisses -= 100000;
         }
-
     }
     else if(spriteName == 'akb')
     {
-        if(akb_pos_lut[0] < (game_width - (game_width/3)))
+        if(kisses >= 1000000)
         {
-            supes.add.sprite(akb_pos_lut[0], akb_pos_lut[1], 'akb_img');
+            if(akb_pos_lut[0] < (game_width - (game_width/3)))
+            {
+                supes.add.sprite(akb_pos_lut[0], akb_pos_lut[1], 'akb_img');
 
-            akb_pos_lut[0] += 175;
+                akb_pos_lut[0] += 175;
+            }
+
+            timer_akb[counter_tot_akb] = supes.time.addEvent({ delay: 10000, callback: updateAkbKisses, callbackScope: supes, loop: true });
+            counter_tot_akb += 1;
+            kisses -= 1000000;
         }
-
     }
 }
