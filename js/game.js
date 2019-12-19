@@ -26,22 +26,22 @@ var timedEvent;
 
 // Variables for sprite positioning
 var glow_stick_green_posx = 35;
-var glow_stick_green_posy = game_height - 250;
+var glow_stick_green_posy = game_height - 225;
 var glow_stick_yellow_posx = 35;
-var glow_stick_yellow_posy = game_height - 350;
+var glow_stick_yellow_posy = game_height - 290;
 var glow_stick_red_posx = game_width / 3;
-var glow_stick_red_posy = game_height - 250
+var glow_stick_red_posy = game_height - 225;
 var glow_stick_blue_posx = game_width / 3;
-var glow_stick_blue_posy = game_height - 350;
+var glow_stick_blue_posy = game_height - 290;
 
 var fan_green_posx = 35;
-var fan_green_posy = game_height - 450;
+var fan_green_posy = game_height - 370;
 var fan_yellow_posx = 35;
-var fan_yellow_posy = game_height - 550;
+var fan_yellow_posy = game_height - 450;
 var fan_red_posx = game_width / 3;
-var fan_red_posy = game_height - 450;
+var fan_red_posy = game_height - 370;
 var fan_blue_posx = game_width / 3;
-var fan_blue_posy = game_height - 550;
+var fan_blue_posy = game_height - 450;
 
 var turboweeb_posx = 35;
 var turboweeb_posy = 300;
@@ -338,7 +338,7 @@ function create()
     this.anims.create({
         key: 'anim_fan_yellow',
         frames: this.anims.generateFrameNumbers('spritesheet_fan_yellow', { start: 0, end: 20 }),
-        frameRate: 10,
+        frameRate: 5,
         repeat: -1
     });
 
@@ -346,7 +346,7 @@ function create()
     this.anims.create({
         key: 'anim_fan_red',
         frames: this.anims.generateFrameNumbers('spritesheet_fan_red', { start: 0, end: 20 }),
-        frameRate: 10,
+        frameRate: 5,
         repeat: -1
     });
 
@@ -410,11 +410,9 @@ var glow_xpos_range = [10, 10, 15, 10];
 var glow_ypos_range = [-5, -10, 10, -15, 15, 5];
 var glow_pos_cnt = 0;
 
-var fan_xpos_range = [10, 10, 15, 10];
-var fan_ypos_range = [-5, -10, 10, -15, 15, 5];
+var fan_xpos_range = [25, 25, 25, 25];
+var fan_ypos_range = [-15, -20, 20, -25, 25, 15];
 var fan_pos_cnt = 0;
-
-var fan_pos_lut
 
 function createSprite(supes, spriteName) {
 
@@ -441,7 +439,20 @@ function createSprite(supes, spriteName) {
     }
     else if(spriteName == 'weeb')
     {
-        weeb = supes.add.sprite(100, 100, 'spritesheet_fan_green').play('anim_fan_blue');
+        if(fan_pos_lut[6] < (game_width - (game_width/3)))
+        {
+            supes.add.sprite(fan_pos_lut[fan_cnt * 2], fan_pos_lut[(fan_cnt * 2) + 1], fan_lut[fan_cnt]).play(fan_anim_lut[fan_cnt]);
+
+            // Increment glow stick x-y positions, checking for boundaries
+            fan_pos_lut[fan_cnt * 2] += fan_xpos_range[fan_pos_cnt % 4];
+            fan_pos_lut[(fan_cnt * 2) + 1] += fan_ypos_range[fan_pos_cnt % 6];
+
+            if((fan_cnt % 4) == 0)
+            {
+                fan_pos_cnt++;
+            }
+            fan_cnt = (fan_cnt + 1) % 4;
+        }
     }
     else if(spriteName == 'turbo_weeb')
     {
