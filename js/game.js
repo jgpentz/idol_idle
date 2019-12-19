@@ -43,22 +43,26 @@ var fan_red_posy = game_height - 370;
 var fan_blue_posx = game_width / 3;
 var fan_blue_posy = game_height - 450;
 
-var turboweeb_posx = 35;
-var turboweeb_posy = 300;
+var turbo_weeb_posx = 35;
+var turbo_weeb_posy = game_height - 555;
 
-var mag_posx = 35;
-var mag_poxy = 200;
+var mag_posx = 55;
+var mag_posy = game_height - 645;
 
-var akb_poxx = 35;
-var akb_posy = 100;
+var akb_posx = 35;
+var akb_posy = game_height - 625;
 
 var chad_posx;
 var chad_posy;
 var super_chad_posx;
 var super_chad_posy;
 
+// LUT counters
 var glow_cnt = 0;
 var fan_cnt = 0;
+var turbo_weeb_cnt = 0;
+var mag_cnt = 0;
+var akb_cnt = 0;
 
 // Glow stick LUTs
 var glow_stick_lut = [
@@ -100,6 +104,18 @@ var fan_pos_lut = [
     fan_red_posy,
     fan_blue_posx,
     fan_blue_posy,
+];
+
+// Turbo weeb LUTs
+var turbo_weeb_pos_lut = [
+    turbo_weeb_posx,
+    turbo_weeb_posy,
+];
+
+// MAG LUTs
+var mag_pos_lut = [
+    mag_posx,
+    mag_posy,
 ];
 
 // -----------------------------------------
@@ -154,22 +170,27 @@ function preload()
         { frameWidth: 80, frameHeight: 80 }
     );
 
-
-
     // Load Mark images for the animation
-    this.load.image('mark0', '../assets/CyborgMark/Takbo/TakboMark_000.png')
-    this.load.image('mark1', '../assets/CyborgMark/Takbo/TakboMark_001.png')
-    this.load.image('mark2', '../assets/CyborgMark/Takbo/TakboMark_002.png')
-    this.load.image('mark3', '../assets/CyborgMark/Takbo/TakboMark_003.png')
-    this.load.image('mark4', '../assets/CyborgMark/Takbo/TakboMark_004.png')
-    this.load.image('mark5', '../assets/CyborgMark/Takbo/TakboMark_005.png')
-    this.load.image('mark6', '../assets/CyborgMark/Takbo/TakboMark_006.png')
-    this.load.image('mark7', '../assets/CyborgMark/Takbo/TakboMark_007.png')
-    this.load.image('mark8', '../assets/CyborgMark/Takbo/TakboMark_008.png')
-    this.load.image('mark9', '../assets/CyborgMark/Takbo/TakboMark_009.png')
-    this.load.image('mark10', '../assets/CyborgMark/Takbo/TakboMark_010.png')
-    this.load.image('mark11', '../assets/CyborgMark/Takbo/TakboMark_011.png')
+    this.load.image('mark0', '../assets/CyborgMark/Takbo/TakboMark_000.png');
+    this.load.image('mark1', '../assets/CyborgMark/Takbo/TakboMark_001.png');
+    this.load.image('mark2', '../assets/CyborgMark/Takbo/TakboMark_002.png');
+    this.load.image('mark3', '../assets/CyborgMark/Takbo/TakboMark_003.png');
+    this.load.image('mark4', '../assets/CyborgMark/Takbo/TakboMark_004.png');
+    this.load.image('mark5', '../assets/CyborgMark/Takbo/TakboMark_005.png');
+    this.load.image('mark6', '../assets/CyborgMark/Takbo/TakboMark_006.png');
+    this.load.image('mark7', '../assets/CyborgMark/Takbo/TakboMark_007.png');
+    this.load.image('mark8', '../assets/CyborgMark/Takbo/TakboMark_008.png');
+    this.load.image('mark9', '../assets/CyborgMark/Takbo/TakboMark_009.png');
+    this.load.image('mark10', '../assets/CyborgMark/Takbo/TakboMark_010.png');
+    this.load.image('mark11', '../assets/CyborgMark/Takbo/TakboMark_011.png');
+
+    // Load MAG spritesheet
+    this.load.spritesheet('spritesheet_mag',
+        '../assets/mag_spritesheet.png',
+        { frameWidth: 100, frameHeight: 100 }
+    );
 }
+
 
 function create()
 {
@@ -306,7 +327,7 @@ function create()
     });
 
     this.anims.create({
-        key: 'run',
+        key: 'anim_turbo_weeb',
         frames: [
             { key: 'mark0' },
             { key: 'mark1' },
@@ -321,7 +342,7 @@ function create()
             { key: 'mark10' },
             { key: 'mark11', duration: 50 }
         ],
-        frameRate: 65,
+        frameRate: 100,
         repeat: -1
     });
 
@@ -358,10 +379,15 @@ function create()
         repeat: -1
     });
 
-    // Sprite spawning
-    // weeb = this.add.sprite(100, 100, 'spritesheet_fan_blue').play('anim_fan_blue');
-    robo_weeb = this.add.sprite(400, 300, 'mark0').play('run');
+    // Animations for mag
+    this.anims.create({
+        key: 'anim_mag',
+        frames: this.anims.generateFrameNumbers('spritesheet_mag', { start: 0, end: 11 }),
+        frameRate: 5,
+        repeat: -1
+    });
 
+    // Click events
     maidClickAction = () => {
         maidClick(this);
     }
@@ -456,10 +482,21 @@ function createSprite(supes, spriteName) {
     }
     else if(spriteName == 'turbo_weeb')
     {
+        if(turbo_weeb_pos_lut[0] < (game_width - (game_width/3)))
+        {
+            supes.add.sprite(turbo_weeb_pos_lut[0], turbo_weeb_pos_lut[1], 'mark0').play('anim_turbo_weeb');
 
+            turbo_weeb_pos_lut[0] += 50;
+        }
     }
     else if(spriteName == 'mag')
     {
+        if(mag_pos_lut[0] < (game_width - (game_width/3)))
+        {
+            supes.add.sprite(mag_pos_lut[0], mag_pos_lut[1], 'spritesheet_mag').play('anim_mag');
+
+            mag_pos_lut[0] += 105;
+        }
 
     }
     else if(spriteName == 'akb')
