@@ -36,14 +36,19 @@ var counter_tot_turbo_weeb = 0;
 var counter_tot_mag = 0;
 var counter_tot_akb = 0;
 
+var gs_text;
+var fan_text;
+var tb_text;
+var mag_text;
+var akb_text;
 
 // Variables for sprite positioning
 var glow_stick_green_posx = 35;
-var glow_stick_green_posy = game_height - 225;
+var glow_stick_green_posy = game_height - 235;
 var glow_stick_yellow_posx = 35;
 var glow_stick_yellow_posy = game_height - 290;
 var glow_stick_red_posx = game_width / 3;
-var glow_stick_red_posy = game_height - 225;
+var glow_stick_red_posy = game_height - 235;
 var glow_stick_blue_posx = game_width / 3;
 var glow_stick_blue_posy = game_height - 290;
 
@@ -259,10 +264,12 @@ function create()
     // Glow stick button actions
     glow_stick_button.on('pointerover', function() {
         this.setTint(0xb3001e);
+        gs_mouseover();
     });
 
     glow_stick_button.on('pointerout', function() {
         this.clearTint();
+        gs_mouseoff();
     });
 
     glow_stick_button.on('pointerdown', function() {
@@ -277,10 +284,12 @@ function create()
     // Weeb button actions
     weeb_button.on('pointerover', function() {
         this.setTint(0xb3001e);
+        fan_mouseover();
     });
 
     weeb_button.on('pointerout', function() {
         this.clearTint();
+        fan_mouseoff();
     });
 
     weeb_button.on('pointerdown', function() {
@@ -295,10 +304,12 @@ function create()
     // Turbo weeb button actions
     turbo_weeb_button.on('pointerover', function() {
         this.setTint(0xb3001e);
+        tb_mouseover();
     });
 
     turbo_weeb_button.on('pointerout', function() {
         this.clearTint();
+        tb_mouseoff();
     });
 
     turbo_weeb_button.on('pointerdown', function() {
@@ -313,10 +324,12 @@ function create()
     // Meet and greet button actions
     mag_button.on('pointerover', function() {
         this.setTint(0xb3001e);
+        mag_mouseover();
     });
 
     mag_button.on('pointerout', function() {
         this.clearTint();
+        mag_mouseoff();
     });
 
     mag_button.on('pointerdown', function() {
@@ -331,10 +344,12 @@ function create()
     // Akb48 button actions
     akb_button.on('pointerover', function() {
         this.setTint(0xb3001e);
+        akb_mouseover();
     });
 
     akb_button.on('pointerout', function() {
         this.clearTint();
+       akb_mouseoff();
     });
 
     akb_button.on('pointerdown', function() {
@@ -415,6 +430,42 @@ function create()
     spawn = (spriteName) => {
         createSprite(this, spriteName);
    }
+
+    gs_mouseover = () => {
+        gs_text = this.add.text((game_width/20)-50,game_height-210,'25 kisses', { font: '24px Arial', fill: '#b3001e' });
+    }
+    gs_mouseoff = () => {
+        gs_text.destroy();
+    }
+
+    fan_mouseover = () => {
+        fan_text = this.add.text((game_width/20)-50,game_height-210,'500 kisses', { font: '24px Arial', fill: '#b3001e' });
+    }
+    fan_mouseoff = () => {
+        fan_text.destroy();
+    }
+
+    tb_mouseover = () => {
+        tb_text = this.add.text((game_width/20)-50,game_height-210,'10k kisses', { font: '24px Arial', fill: '#b3001e' });
+    }
+    tb_mouseoff = () => {
+        tb_text.destroy();
+    }
+
+    mag_mouseover = () => {
+        mag_text = this.add.text((game_width/20)-50,game_height-210,'100k kisses', { font: '24px Arial', fill: '#b3001e' });
+    }
+    mag_mouseoff = () => {
+        mag_text.destroy();
+    }
+
+    akb_mouseover = () => {
+        akb_text = this.add.text((game_width/20)-50,game_height-210,'1m kisses', { font: '24px Arial', fill: '#b3001e' });
+    }
+    akb_mouseoff = () => {
+        akb_text.destroy();
+    }
+
 
    // Add kisses counter in top left
    kissesText = this.add.text(55,15,'Kisses: 0', { font: '24px Arial', fill: '#b3001e' });
