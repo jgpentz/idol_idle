@@ -49,8 +49,8 @@ var turbo_weeb_posy = game_height - 555;
 var mag_posx = 55;
 var mag_posy = game_height - 645;
 
-var akb_posx = 35;
-var akb_posy = game_height - 625;
+var akb_posx = 95;
+var akb_posy = game_height - 750;
 
 var chad_posx;
 var chad_posy;
@@ -118,6 +118,12 @@ var mag_pos_lut = [
     mag_posy,
 ];
 
+// AKB LUTs
+var akb_pos_lut = [
+    akb_posx,
+    akb_posy,
+];
+
 // -----------------------------------------
 // Functions
 // -----------------------------------------
@@ -140,6 +146,7 @@ function preload()
     this.load.image('red_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark5.png');
     this.load.image('blue_glow_stick_img', '../assets/Ardentryst-GUICursorsArrowsIconsMarkers/Ardentryst-Mark6.png');
 
+    this.load.image('akb_img', '../assets/akb48.png');
 
     // Load sprites
     this.load.spritesheet('kiss_spritesheet',
@@ -189,6 +196,8 @@ function preload()
         '../assets/mag_spritesheet.png',
         { frameWidth: 100, frameHeight: 100 }
     );
+
+    // Load AKB48
 }
 
 
@@ -403,7 +412,6 @@ function create()
 
 function update()
 {
-    // weeb.anims.play('anim_blue_bow', true);
     kissCountUpdate();
 }
 
@@ -441,13 +449,9 @@ var fan_ypos_range = [-15, -20, 20, -25, 25, 15];
 var fan_pos_cnt = 0;
 
 function createSprite(supes, spriteName) {
-
-    /*
-    *  Alloted space for glow sticks
-    *  | 35 ---------- (game_width/3) --------- (game_width - gamewidth/3) |
-    */
     if(spriteName == 'glow_stick')
     {
+        if(kisses > 10)
         if(glow_stick_pos_lut[6] < (game_width - (game_width/3)))
         {
             supes.add.sprite(glow_stick_pos_lut[glow_cnt * 2], glow_stick_pos_lut[(glow_cnt * 2) + 1], glow_stick_lut[glow_cnt]);
@@ -501,6 +505,12 @@ function createSprite(supes, spriteName) {
     }
     else if(spriteName == 'akb')
     {
+        if(akb_pos_lut[0] < (game_width - (game_width/3)))
+        {
+            supes.add.sprite(akb_pos_lut[0], akb_pos_lut[1], 'akb_img');
+
+            akb_pos_lut[0] += 175;
+        }
 
     }
 }
