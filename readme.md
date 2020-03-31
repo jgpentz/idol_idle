@@ -1,1 +1,1 @@
-Are you ready to sing your way to chastity?
+Are you ready to reach top idol fan?
